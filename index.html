@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">مكتبة التطبيقات الإسلامية</title>
+    
+    <!-- كود تفعيل AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6074855739096869" crossorigin="anonymous"></script>
+    
+    <!-- خطوط عربية حديثة -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* متغيرات الألوان الافتراضية */
+            --primary: #047857;       
+            --primary-light: #059669; 
+            --secondary: #d97706;     
+            --accent: #ecfdf5;
+            --bg-body: #f3f4f6;       
+            --bg-card: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: 'Tajawal', sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            line-height: 1.6; 
+            min-height: 100vh; 
+            display: flex; flex-direction: column;
+            overflow-x: hidden;
+            transition: background-color 0.3s;
+        }
+
+        h1, h2, h3 { font-family: 'Cairo', sans-serif; font-weight: 800; color: var(--primary); transition: color 0.3s; }
+
+        /* --- الهيدر --- */
+        header { 
+            background: rgba(255,255,255, 0.9); 
+            backdrop-filter: blur(12px); 
+            border-bottom:1px solid rgba(0,0,0,0.05);
+            position: sticky; top: 0; z-index: 100; padding: 15px 0; transition: all 0.3s;
+        }
+        .container { width: 95%; max-width: 1200px; margin: 0 auto; }
+        .nav-flex { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.4rem; font-weight: 800; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 10px; transition: color 0.3s; }
+        .logo svg { width: 28px; height: 28px; fill: var(--secondary); transition: fill 0.3s; }
+        
+        nav ul { list-style: none; display: flex; gap: 25px; }
+        nav a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 1rem; transition: 0.3s; position: relative; }
+        nav a:hover, nav a.active { color: var(--primary); }
+        nav a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background: var(--secondary); transition: width 0.3s; border-radius: 2px; }
+        nav a:hover::after { width: 100%; }
+
+        /* --- المحتوى --- */
+        main { flex: 1; padding-bottom: 50px; }
+        .section { display: none; animation: fadeUp 0.4s; }
+        .section.active { display: block; }
+        @keyframes fadeUp { from {opacity: 0; transform: translateY(10px);} to {opacity: 1; transform: translateY(0);} }
+
+        /* --- البحث والتصفية --- */
+        .search-section { background: var(--bg-card); padding: 30px 0; border-bottom: 1px solid #eee; margin-bottom: 30px; }
+        .search-wrapper { max-width: 600px; margin: 0 auto 20px auto; position: relative; }
+        .search-input { width: 100%; padding: 14px 50px 14px 20px; border-radius: var(--radius-full); border: 2px solid #e5e7eb; font-size: 1rem; font-family: 'Tajawal', sans-serif; transition: 0.3s; background: #f9fafb; }
+        .search-input:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 4px rgba(4, 120, 87, 0.1); }
+        .search-icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 20px; }
+        .categories { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .cat-chip { padding: 8px 20px; border-radius: var(--radius-full); background: #f3f4f6; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; }
+        .cat-chip:hover { background: #e5e7eb; }
+        .cat-chip.active { background: var(--primary); color: #fff; box-shadow: 0 4px 6px rgba(4, 120, 87, 0.2); }
+
+        /* --- الشبكة --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .card { background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: 20px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; display: flex; flex-direction: column; border: 1px solid rgba(0,0,0,0.03); overflow: hidden; }
+        .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+        
+        .card-header { display: flex; align-items: center; margin-bottom: 15px; gap: 15px; }
+        .app-icon { width: 70px; height: 70px; border-radius: 18px; object-fit: cover; flex-shrink: 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .app-info h3 { font-size: 1.1rem; margin-bottom: 4px; color: var(--text-main); }
+        .app-info span { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+        .rating { color: var(--secondary); font-size: 0.8rem; margin-top: 5px; display: block; }
+        .card-body { flex: 1; margin-bottom: 20px; }
+        .card p { font-size: 0.9rem; color: #4b5563; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .card-footer { display: flex; gap: 10px; }
+        
+        /* --- الأزرار --- */
+        .btn { padding: 10px 20px; border-radius: 10px; cursor: pointer; font-family: 'Tajawal', sans-serif; font-weight: 700; font-size: 0.9rem; transition: 0.2s; text-align: center; text-decoration: none; display: flex; justify-content: center; align-items: center; border: none; flex: 1; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%); color: #fff; box-shadow: 0 4px 6px rgba(4, 120, 87, 0.2); }
+        .btn-primary:hover { transform: scale(1.02); }
+        .btn-outline { background: transparent; border: 1px solid #e5e7eb; color: var(--text-main); }
+        .btn-outline:hover { background: #f9fafb; border-color: var(--primary); color: var(--primary); }
+        .btn-download { background: var(--secondary); color: #fff; border-radius: 8px; width: auto; padding: 8px 16px; }
+        .btn-download:hover { background: #b45309; }
+
+        /* --- النافذات --- */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        .modal-content { background: #fff; width: 90%; max-width: 700px; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); position: relative; animation: slideUp 0.3s ease-out; max-height: 90vh; overflow-y: auto; }
+        .modal-hero { background: linear-gradient(180deg, var(--accent) 0%, #fff 100%); padding: 40px 30px; text-align: center; border-bottom: 1px solid #eee; }
+        .modal-icon { width: 110px; height: 110px; border-radius: 24px; box-shadow: 0 10px 20px rgba(0,0,0,0.15); margin-bottom: 20px; border: 4px solid #fff; object-fit: cover; }
+        .modal-body { padding: 30px; font-size: 1.05rem; color: #374151; line-height: 1.8; white-space: pre-wrap;}
+        .modal-footer { padding: 20px 30px; background: #f9fafb; display: flex; gap: 15px; border-top: 1px solid #eee; }
+        
+        /* --- زر الإدمن --- */
+        .fab { position: fixed; bottom: 30px; left: 30px; width: 56px; height: 56px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 999; transition: 0.3s; }
+        .fab:hover { transform: scale(1.1); }
+        .fab svg { width: 26px; height: 26px; fill: #fff; }
+
+        /* --- لوحة التحكم --- */
+        .admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 1000; overflow-y: auto; }
+        .admin-content { background: #fff; max-width: 800px; margin: 40px auto; border-radius: 20px; padding: 30px; box-shadow: var(--shadow-lg); }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid #eee; }
+        
+        .tabs-nav { display: flex; border-bottom: 2px solid #eee; margin-bottom: 25px; overflow-x: auto; padding-bottom: 5px;}
+        .tab-link { padding: 12px 20px; cursor: pointer; border-bottom: 3px solid transparent; font-weight: 600; color: #777; white-space: nowrap; font-family: 'Tajawal'; border-radius: 5px 5px 0 0; transition: 0.3s; }
+        .tab-link.active { border-color: var(--primary); color: var(--primary); background: rgba(4, 120, 87, 0.05); }
+        .tab-pane { display: none; animation: fadeUp 0.3s; }
+        .tab-pane.active { display: block; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-main); font-size: 0.9rem; }
+        .form-control { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-family: 'Tajawal'; transition: 0.3s; }
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.1); }
+        
+        .color-inputs { display: flex; gap: 15px; }
+        .color-box { flex: 1; }
+        .color-picker { width: 100%; height: 40px; cursor: pointer; border: 1px solid #ddd; border-radius: 8px; padding: 2px; }
+
+        /* --- عرض الصفحات --- */
+        .page-view { display: none; background: #fff; padding: 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); margin-bottom: 40px; }
+        .page-view.active { display: block; }
+
+        /* --- الإعلانات --- */
+        .ad-banner { width: 100%; background: #e5e7eb; border-radius: 12px; padding: 20px; text-align: center; margin: 20px 0; border: 1px dashed #ccc; color: #6b7280; font-size: 0.85rem; }
+
+        footer { text-align: center; padding: 30px 0; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid #eee; margin-top: auto; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-flex">
+            <a href="#home" class="logo" id="site-logo">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                مكتبة التطبيقات
+            </a>
+            <nav>
+                <ul id="main-nav">
+                    <li><a href="#home" class="active">الرئيسية</a></li>
+                    <!-- الصفحات ستضاف هنا -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- قسم البحث والتصفية (يظهر فقط في الرئيسية) -->
+    <div id="search-section" class="search-section">
+        <div class="container">
+            <div class="search-wrapper">
+                <input type="text" class="search-input" id="search-input" placeholder="ابحث عن تطبيق (قرآن، أذكار...)">
+                <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <div class="categories" id="category-filters">
+                <button class="cat-chip active" data-cat="all">الكل</button>
+                <button class="cat-chip" data-cat="قرآن">قرآن</button>
+                <button class="cat-chip" data-cat="أذكار">أذكار</button>
+                <button class="cat-chip" data-cat="تعليم">تعليم</button>
+                <button class="cat-chip" data-cat="أخرى">أخرى</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        <!-- المحتوى الرئيسي (الرئيسية) -->
+        <div id="home-section" class="section active">
+            <div class="ad-banner">مساحة إعلانية</div>
+            <div id="apps-grid" class="grid"></div>
+            <div id="no-results" style="display: none; text-align: center; padding: 40px; color: #9ca3af;">
+                <p>لا توجد نتائج تطابق بحثك</p>
+            </div>
+        </div>
+
+        <!-- المحتوى (صفحة مخصصة) -->
+        <div id="page-section" class="page-view">
+            <h1 id="page-title-display" style="margin-bottom: 20px;">عنوان الصفحة</h1>
+            <div id="page-content-display" style="font-size: 1.2rem; line-height: 1.8;"></div>
+            <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
+            
+            <h3 style="margin-bottom: 15px;">تطبيقات هذه الصفحة</h3>
+            <div id="page-apps-grid" class="grid"></div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="year"></span> مكتبة التطبيقات الإسلامية - جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <!-- زر الإدمن -->
+    <div class="fab" onclick="openAdmin()">
+        <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.58 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+    </div>
+
+    <!-- نافذة تسجيل الدخول -->
+    <div class="modal-overlay" id="login-modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center; padding: 40px;">
+            <button onclick="closeLogin()" style="position: absolute; top: 15px; left: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #9ca3af;">&times;</button>
+            <div style="width: 60px; height: 60px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto;">
+                <svg style="width: 30px; height: 30px; fill: var(--primary);" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            </div>
+            <h2 style="margin-bottom: 5px;">دخول الإدارة</h2>
+            <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 20px;">الرجاء إدخال كلمة المرور.</p>
+            <input type="password" id="login-pass" class="form-control" style="text-align: center;" placeholder="كلمة المرور">
+            <button onclick="attemptLogin()" class="btn btn-primary" style="width: 100%;">دخول</button>
+        </div>
+    </div>
+
+    <!-- نافذة تفاصيل التطبيق -->
+    <div class="modal-overlay" id="detail-modal">
+        <div class="modal-content">
+            <button onclick="closeModal()" style="position: absolute; top: 15px; left: 15px; background: rgba(0,0,0,0.05); border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center;">&times;</button>
+            <div class="modal-hero">
+                <img id="m-icon" src="" class="modal-icon">
+                <h2 id="m-title" style="margin-bottom: 5px;">اسم التطبيق</h2>
+                <span id="m-dev" style="color: var(--secondary); font-weight: 600;">المطور</span>
+                <div id="m-rating" style="margin-top: 8px; color: #fbbf24;">★★★★☆</div>
+            </div>
+            <div id="m-ad-top" class="ad-banner">مساحة إعلانية (AdSense)</div>
+            <div id="m-desc" class="modal-body"></div>
+            <div id="m-ad-bottom" class="ad-banner">مساحة إعلانية</div>
+            <div class="modal-footer">
+                <a id="m-link" href="#" target="_blank" class="btn btn-download" style="flex: 1;">تحميل</a>
+                <button onclick="copyLink()" class="btn btn-outline" style="flex: 1;">نسخ الرابط</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- لوحة الإدارة المحلية -->
+    <div class="admin-panel" id="admin-panel">
+        <div class="admin-content">
+            <div class="admin-header">
+                <h2>لوحة التحكم</h2>
+                <button onclick="logout()" class="btn btn-download">خروج</button>
+            </div>
+
+            <div class="tabs-nav">
+                <div class="tab-link active" onclick="switchTab('apps')">التطبيقات</div>
+                <div class="tab-link" onclick="switchTab('pages')">الصفحات</div>
+                <div class="tab-link" onclick="switchTab('settings')">الإعدادات</div>
+            </div>
+
+            <!-- تبويب التطبيقات -->
+            <div id="tab-apps" class="tab-pane active">
+                <h3>إضافة تطبيق جديد</h3>
+                <div class="form-group">
+                    <label>اسم التطبيق</label>
+                    <input type="text" id="i-title" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>المطور</label>
+                    <input type="text" id="i-dev" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>التصنيف</label>
+                    <select id="i-cat" class="form-control">
+                        <option value="قرآن">قرآن</option>
+                        <option value="أذكار">أذكار</option>
+                        <option value="تعليم">تعليم</option>
+                        <option value="أخرى">أخرى</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>أيقونة التطبيق</label>
+                    <!-- مدخل الملف -->
+                    <input type="file" id="i-file" class="form-control" accept="image/*" onchange="handleFileUpload(this)">
+                    <small style="color:#666; display:block; margin-top:5px;">أو رابط مباشر (اختياري)</small>
+                    <input type="text" id="i-icon" class="form-control" placeholder="https://..." style="margin-top: 5px;">
+                </div>
+                <div class="form-group">
+                    <label>مكان النشر (الصفحة)</label>
+                    <select id="i-target" class="form-control">
+                        <option value="home">الرئيسية (الكل)</option>
+                        <!-- سيتم تعبئة الصفحات ديناميكياً هنا -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>الوصف</label>
+                    <textarea id="i-desc" class="form-control" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>رابط التحميل</label>
+                    <input type="text" id="i-link" class="form-control">
+                </div>
+                <button onclick="saveApp()" class="btn btn-primary">حفظ التطبيق</button>
+                <button onclick="resetAppForm()" class="btn btn-outline" style="margin-top:10px; width:100%;">مسح</button>
+            </div>
+
+            <!-- تبويب الصفحات -->
+            <div id="tab-pages" class="tab-pane">
+                <h3>إدارة الصفحات</h3>
+                <div class="form-group">
+                    <label>عنوان الصفحة</label>
+                    <input type="text" id="p-title" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>محتوى الصفحة (HTML)</label>
+                    <textarea id="p-content" class="form-control" rows="5"></textarea>
+                </div>
+                <div class="form-group" style="background: #f0fdf4; padding: 15px; border-radius: 8px; border: 1px solid #a7f3d0;">
+                    <label style="color: #065f46;">إعدادات SEO (محركات البحث)</label>
+                    <input type="text" id="p-seo-title" class="form-control" placeholder="عنوان الصفحة (ميتا تایتل)" style="margin-bottom: 10px;">
+                    <textarea id="p-seo-desc" class="form-control" rows="2" placeholder="وصف الصفحة (ميتا ديسكريبشن)"></textarea>
+                </div>
+                <button onclick="savePage()" class="btn btn-primary">حفظ الصفحة</button>
+                
+                <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px;" id="pages-list"></div>
+            </div>
+
+            <!-- تبويب الإعدادات -->
+            <div id="tab-settings" class="tab-pane">
+                <h3>تخصيص الموقع</h3>
+                <div class="form-group">
+                    <label>كلمة المرور الجديدة</label>
+                    <input type="password" id="s-pass" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>ألوان الموقع</label>
+                    <div class="color-inputs">
+                        <div class="color-box">
+                            <label>اللون الأساسي (Primary)</label>
+                            <input type="color" id="c-primary" class="color-picker" value="#047857" oninput="previewColor()">
+                        </div>
+                        <div class="color-box">
+                            <label>اللون الثانوي (Secondary)</label>
+                            <input type="color" id="c-secondary" class="color-picker" value="#d97706" oninput="previewColor()">
+                        </div>
+                        <div class="color-box">
+                            <label>الخلفية (Body)</label>
+                            <input type="color" id="c-bg" class="color-picker" value="#f3f4f6" oninput="previewColor()">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>SEO الافتراضي للرئيسية</label>
+                    <input type="text" id="s-seo-title" class="form-control" placeholder="عنوان الموقع">
+                    <textarea id="s-seo-desc" class="form-control" rows="2" placeholder="وصف الموقع"></textarea>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <button onclick="saveSettings()" class="btn btn-primary">حفظ التغييرات</button>
+                    <button onclick="resetSettings()" class="btn btn-outline" style="width: auto; margin-right: 10px;">استعادة الافتراضي</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // --- البيانات ---
+        const DB_KEY = 'modern_app_store_full_v1';
+        
+        const defaultDB = {
+            settings: {
+                password: 'admin',
+                colors: { primary: '#047857', secondary: '#d97706', bg: '#f3f4f6' },
+                seo: { title: 'مكتبة التطبيقات الإسلامية', desc: 'أفضل تطبيقات الإسلامية' }
+            },
+            pages: [], // سيتم تخزين الصفحات هنا
+            apps: [
+                { id: 1, title: 'القرآن الكريم', dev: 'Harf Group', cat: 'قرآن', icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Quran_svg.svg/1200px-Quran_svg.svg.png', desc: 'تطبيق القرآن الكريم يوفر تلاوات عديدة.', link: '#', target: 'home' },
+                { id: 2, title: 'موسوعة الأذكار', dev: 'Islamic App', cat: 'أذكار', icon: 'https://cdn-icons-png.flaticon.com/512/9775/9775288.png', desc: 'تطبيق شامل للأذكار.', link: '#', target: 'home' }
+            ]
+        };
+
+        let db = JSON.parse(localStorage.getItem(DB_KEY)) || defaultDB;
+        
+        // التأكد من وجود الحقول
+        if(!db.settings) db.settings = defaultDB.settings;
+        if(!db.pages) db.pages = [];
+        if(!db.apps) db.apps = [];
+
+        let currentCat = 'all';
+        let currentSearch = '';
+        let currentLink = '';
+        let isLoggedIn = false;
+
+        // --- التهيئة ---
+        document.getElementById('year').textContent = new Date().getFullYear();
+        checkSession();
+        applySettings();
+        renderNav();
+        handleHash();
+        window.addEventListener('hashchange', handleHash);
+
+        // --- منطق الصفحات (Routing) ---
+        function handleHash() {
+            const hash = window.location.hash;
+            const homeSec = document.getElementById('home-section');
+            const pageSec = document.getElementById('page-section');
+            const searchSec = document.getElementById('search-section');
+
+            document.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+
+            if (!hash || hash === '#home') {
+                homeSec.classList.add('active');
+                pageSec.classList.remove('active');
+                searchSec.style.display = 'block';
+                document.querySelector('a[href="#home"]').classList.add('active');
+                
+                applySEO(db.settings.seo);
+                renderApps('home');
+            } else if (hash.startsWith('#page-')) {
+                const id = parseInt(hash.split('-')[1]);
+                const page = db.pages.find(p => p.id === id);
+                if (page) {
+                    homeSec.classList.remove('active');
+                    pageSec.classList.add('active');
+                    searchSec.style.display = 'none';
+                    document.querySelector(`a[href="#page-${id}"]`)?.classList.add('active');
+                    
+                    // عرض بيانات الصفحة
+                    document.getElementById('page-title-display').textContent = page.title;
+                    document.getElementById('page-content-display').innerHTML = page.content;
+                    
+                    // تطبيق SEO الصفحة
+                    const pageSEO = page.seo || db.settings.seo;
+                    applySEO(pageSEO);
+
+                    // عرض تطبيقات الصفحة
+                    renderApps('page', id);
+                } else {
+                    window.location.hash = 'home';
+                }
+            }
+        }
+
+        function applySEO(seoObj) {
+            if(seoObj) {
+                document.title = seoObj.title;
+                const metaDesc = document.querySelector('meta[name="description"]');
+                if(metaDesc) metaDesc.setAttribute('content', seoObj.desc);
+            }
+        }
+
+        function applySettings() {
+            const colors = db.settings.colors;
+            const r = document.documentElement;
+            r.style.setProperty('--primary', colors.primary);
+            r.style.setProperty('--secondary', colors.secondary);
+            r.style.setProperty('--bg-body', colors.bg);
+            
+            // تحديث أدوات الألوان في الإعدادات
+            document.getElementById('c-primary').value = colors.primary;
+            document.getElementById('c-secondary').value = colors.secondary;
+            document.getElementById('c-bg').value = colors.bg;
+            
+            // تحديث حقول الإعدادات
+            document.getElementById('s-seo-title').value = db.settings.seo.title;
+            document.getElementById('s-seo-desc').value = db.settings.seo.desc;
+        }
+
+        // --- العرض ---
+        function renderNav() {
+            const nav = document.getElementById('main-nav');
+            nav.innerHTML = `<li><a href="#home">الرئيسية</a></li>`;
+            db.pages.forEach(p => {
+                nav.innerHTML += `<li><a href="#page-${p.id}">${p.title}</a></li>`;
+            });
+        }
+
+        function renderApps(view, pageId = null) {
+            let gridId = 'apps-grid';
+            if (view === 'page') gridId = 'page-apps-grid';
+            
+            const grid = document.getElementById(gridId);
+            const noResults = document.getElementById('no-results');
+            grid.innerHTML = '';
+
+            let filtered = db.apps.filter(app => {
+                const matchesCat = currentCat === 'all' || app.cat === currentCat;
+                const matchesSearch = app.title.toLowerCase().includes(currentSearch);
+                const matchesTarget = (view === 'home' && (app.target === 'home' || !app.target)) || (view === 'page' && app.target == pageId);
+                return matchesCat && matchesSearch && matchesTarget;
+            });
+
+            if (filtered.length === 0) {
+                if(view === 'home') noResults.style.display = 'block';
+                return;
+            }
+            noResults.style.display = 'none';
+
+            filtered.forEach(app => {
+                const icon = app.icon || `https://ui-avatars.com/api/?name=${app.title}&background=${db.settings.colors.primary}&color=fff&size=128`;
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <img src="${icon}" class="app-icon" alt="${app.title}">
+                        <div class="app-info">
+                            <h3>${app.title}</h3>
+                            <span>${app.dev}</span>
+                            <div class="rating">4.8 ★</div>
+                        </div>
+                    </div>
+                    <div class="card-body"><p>${app.desc}</p></div>
+                    <div class="card-footer">
+                        <button onclick="openModal(${app.id})" class="btn btn-outline" style="flex: 2;">التفاصيل</button>
+                        <a href="${app.link}" target="_blank" class="btn btn-download" style="flex:1;">تحميل</a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- البحث والفلترة ---
+        function filterApps() {
+            const term = document.getElementById('search-input').value.toLowerCase();
+            currentSearch = term;
+            handleHash(); // إعادة الرسم
+        }
+        document.getElementById('search-input').addEventListener('input', filterApps);
+
+        document.getElementById('category-filters').addEventListener('click', (e) => {
+            if(e.target.classList.contains('cat-chip')) {
+                document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+                e.target.classList.add('active');
+                currentCat = e.target.dataset.cat;
+                filterApps();
+            }
+        });
+
+        // --- المودال (التفاصيل) ---
+        function openModal(id) {
+            const app = db.apps.find(a => a.id === id);
+            if(!app) return;
+            currentLink = app.link;
+            
+            const icon = app.icon || `https://ui-avatars.com/api/?name=${app.title}&background=${db.settings.colors.primary}&color=fff&size=128`;
+            
+            document.getElementById('m-icon').src = icon;
+            document.getElementById('m-title').textContent = app.title;
+            document.getElementById('m-dev').textContent = app.dev;
+            document.getElementById('m-desc').textContent = app.desc;
+            document.getElementById('m-link').href = app.link;
+
+            document.getElementById('detail-modal').style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('detail-modal').style.display = 'none'; }
+        function copyLink() { navigator.clipboard.writeText(currentLink).then(() => alert('تم نسخ الرابط!')); }
+
+        // --- الأدمن والمصادقة ---
+        function checkSession() {
+            if(sessionStorage.getItem('isLoggedIn') === 'true') isLoggedIn = true;
+        }
+
+        function openAdmin() {
+            if(isLoggedIn) {
+                document.getElementById('admin-panel').style.display = 'block';
+                loadAdminData();
+            } else {
+                document.getElementById('login-modal').style.display = 'flex';
+            }
+        }
+        function closeLogin() { document.getElementById('login-modal').style.display = 'none'; }
+        function attemptLogin() {
+            const pass = document.getElementById('login-pass').value;
+            if (pass === db.settings.password) {
+                isLoggedIn = true;
+                sessionStorage.setItem('isLoggedIn', 'true');
+                closeLogin();
+                document.getElementById('admin-panel').style.display = 'block';
+                loadAdminData();
+            } else { alert('كلمة المرور غير صحيحة'); }
+        }
+        function logout() {
+            isLoggedIn = false;
+            sessionStorage.removeItem('isLoggedIn');
+            document.getElementById('admin-panel').style.display = 'none';
+        }
+
+        // --- دوال لوحة التحكم ---
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-link').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('tab-'+tab).classList.add('active');
+            if(tab === 'apps') updateTargetDropdown();
+        }
+
+        function loadAdminData() {
+            // تحديث قائمة الصفحات
+            const list = document.getElementById('pages-list');
+            list.innerHTML = '';
+            db.pages.forEach((p, i) => {
+                list.innerHTML += `
+                    <div class="card" style="padding: 10px; margin-bottom: 10px; flex-direction: row; align-items: center; justify-content: space-between;">
+                        <strong>${p.title}</strong>
+                        <button class="btn btn-download" style="padding: 5px 10px; width: auto;" onclick="deletePage(${i})">حذف</button>
+                    </div>`;
+            });
+            updateTargetDropdown();
+        }
+
+        // 1. رفع الصور وتحويلها لـ Base64
+        let uploadedIconBase64 = '';
+        function handleFileUpload(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedIconBase64 = e.target.result; // تخزين كنص طويل
+                    alert('تم رفع الصورة بنجاح! (سيتم حفظها في ذاكرة المتصفح)');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 2. حفظ التطبيق
+        function saveApp() {
+            const title = document.getElementById('i-title').value;
+            const dev = document.getElementById('i-dev').value;
+            const cat = document.getElementById('i-cat').value;
+            const icon = uploadedIconBase64 || document.getElementById('i-icon').value; // الأولوية للملف المرفوع
+            const target = document.getElementById('i-target').value;
+            const desc = document.getElementById('i-desc').value;
+            const link = document.getElementById('i-link').value;
+
+            if(!title) return alert('العنوان مطلوب');
+            
+            db.apps.unshift({ id: Date.now(), title, dev, cat, icon, target, desc, link });
+            localStorage.setItem(DB_KEY, JSON.stringify(db));
+            
+            // تحديث واجهة الموقع فوراً
+            renderNav();
+            handleHash();
+            resetAppForm();
+            alert('تم حفظ التطبيق!');
+        }
+
+        function updateTargetDropdown() {
+            const select = document.getElementById('i-target');
+            select.innerHTML = '<option value="home">الرئيسية (الكل)</option>';
+            db.pages.forEach(p => {
+                select.innerHTML += `<option value="${p.id}">صفحة: ${p.title}</option>`;
+            });
+        }
+
+        function resetAppForm() {
+            document.querySelectorAll('#tab-apps input, #tab-apps textarea').forEach(el => el.value = '');
+            uploadedIconBase64 = ''; // تصفير المتغير المؤقت
+        }
+
+        // 3. حفظ الصفحة
+        function savePage() {
+            const title = document.getElementById('p-title').value;
+            const content = document.getElementById('p-content').value;
+            const seoTitle = document.getElementById('p-seo-title').value;
+            const seoDesc = document.getElementById('p-seo-desc').value;
+            
+            if(!title) return alert('عنوان الصفحة مطلوب');
+
+            db.pages.push({
+                id: Date.now(),
+                title,
+                content,
+                seo: { title: seoTitle, desc: seoDesc }
+            });
+
+            localStorage.setItem(DB_KEY, JSON.stringify(db));
+            renderNav();
+            loadAdminData();
+            
+            document.getElementById('p-title').value = '';
+            document.getElementById('p-content').value = '';
+            document.getElementById('p-seo-title').value = '';
+            document.getElementById('p-seo-desc').value = '';
+            
+            alert('تمت إضافة الصفحة!');
+        }
+
+        function deletePage(index) {
+            if(confirm('حذف الصفحة؟')) {
+                db.pages.splice(index, 1);
+                localStorage.setItem(DB_KEY, JSON.stringify(db));
+                renderNav();
+                loadAdminData();
+            }
+        }
+
+        // 4. حفظ الإعدادات
+        function previewColor() {
+            const r = document.documentElement;
+            r.style.setProperty('--primary', document.getElementById('c-primary').value);
+            r.style.setProperty('--secondary', document.getElementById('c-secondary').value);
+            r.style.setProperty('--bg-body', document.getElementById('c-bg').value);
+        }
+
+        function saveSettings() {
+            db.settings.password = document.getElementById('s-pass').value || db.settings.password;
+            db.settings.colors.primary = document.getElementById('c-primary').value;
+            db.settings.colors.secondary = document.getElementById('c-secondary').value;
+            db.settings.colors.bg = document.getElementById('c-bg').value;
+            db.settings.seo.title = document.getElementById('s-seo-title').value;
+            db.settings.seo.desc = document.getElementById('s-seo-desc').value;
+
+            localStorage.setItem(DB_KEY, JSON.stringify(db));
+            applySettings(); // تطبيق فوري
+            applySEO(db.settings.seo);
+            alert('تم حفظ الإعدادات!');
+            document.getElementById('s-pass').value = ''; // إفراغ حقل كلمة المرور
+        }
+
+        function resetSettings() {
+            if(confirm('هل تريد استعادة الألوان والإعدادات الافتراضية؟')) {
+                db.settings = defaultDB.settings;
+                saveSettings();
+                location.reload();
+            }
+        }
+
+        // إغلاق النوافذ
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    if(overlay.id === 'detail-modal') closeModal();
+                    if(overlay.id === 'login-modal') closeLogin();
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
